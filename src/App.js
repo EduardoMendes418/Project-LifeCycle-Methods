@@ -1,25 +1,69 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+//Hard coding
+class App extends React.Component {
+    state = {
+      counter: 0,
+      posts: [
+        {
+          id: 1,
+          title: 'teste 01',
+          body: 'o corpo 2'
+        },
+        {
+          id: 2,
+          title: 'teste 02',
+          body: 'o corpo 3'
+        },
+        {
+          id: 3,
+          title: 'teste 03',
+          body: 'o corpo 3'
+        },
+      ]
+  };
+
+  timeoutUpdate = null;
+
+  componentDidMount() {
+    this.handleTimeout();
+  }
+
+  componentDidUpdate() {
+    this.handleTimeout();
+  }
+
+  componentWillUnmount(){
+    clearTimeout(this.timeoutUpdate);
+  }
+
+  handleTimeout = () => {
+    const { posts, counter} = this.state;
+    posts[0].title = 'o titulo mudou';
+
+    this.timeoutUpdate = setTimeout(() => {
+      this.setState({ posts, counter: counter +1})
+    }, 2000)
+  }
+
+  render() {
+
+    const { posts, counter} = this.state;
+
+    return (
+          <div className="App">
+            <p>{counter}</p>
+            {posts.map(post => (
+              <div key={post.id}>
+              <h1>{post.title}</h1>
+              <p>{post.body}</p>
+              </div>
+            ))}
+          </div>
+        );
+  }
 }
+
 
 export default App;
